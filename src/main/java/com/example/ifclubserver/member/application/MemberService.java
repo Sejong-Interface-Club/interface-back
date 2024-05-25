@@ -2,19 +2,21 @@ package com.example.ifclubserver.member.application;
 
 import com.example.ifclubserver.member.domain.dto.MemberDto;
 import com.example.ifclubserver.member.domain.dto.request.CreateMemberRequest;
-import com.example.ifclubserver.member.domain.dto.request.MemberUpdateRequest;
+import com.example.ifclubserver.member.domain.dto.request.UpdateMemberRequest;
 import com.example.ifclubserver.member.domain.dto.response.CreateMemberResponse;
-import com.example.ifclubserver.member.domain.entity.Member;
+import java.util.List;
 
 public interface MemberService {
 
     // 멤버 생성
-    public CreateMemberResponse createMember(CreateMemberRequest form);
+    CreateMemberResponse createMember(CreateMemberRequest form);
 
     // 멤버 가져오기
-    public MemberDto getMember(Long id);
+    MemberDto getMember(Long id);
 
-    public void deleteMember(Long id);
+    List<MemberDto> getMembers();
 
-    public MemberDto updateMember(Long id, MemberUpdateRequest request);
+    void deleteMember(Long id);
+
+    MemberDto updateMember(Long id, UpdateMemberRequest request);
 }

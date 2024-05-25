@@ -1,5 +1,6 @@
 package com.example.ifclubserver.member.domain.entity;
 
+import com.example.ifclubserver.member.domain.entity.constants.MemberRole;
 import com.example.ifclubserver.member.domain.entity.constants.MemberStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +35,9 @@ public class Member {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "student_id", nullable = false)
+    private String studentId;
+
     private String password;
 
     @Column(name = "title", nullable = false, unique = true)
@@ -43,14 +47,15 @@ public class Member {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private MemberStatus memberStatus;
+    private MemberStatus status;
 
     @Column(name = "role", nullable = false)
-    private String role;
+    private MemberRole role;
 
-    public void updateName(String name) {
-        this.name = name;
+    public void updateStudentId(String studentId) {
+        this.studentId = studentId;
     }
+
 
     public void updateName(String name) {
         this.name = name;

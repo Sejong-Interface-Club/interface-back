@@ -1,52 +1,60 @@
 package com.example.ifclubserver.member.presentation;
 
+import com.example.ifclubserver.common.docs.MemberControllerDocs;
 import com.example.ifclubserver.member.application.impl.MemberServiceImpl;
 import com.example.ifclubserver.member.domain.dto.MemberDto;
 import com.example.ifclubserver.member.domain.dto.request.CreateMemberRequest;
-import com.example.ifclubserver.member.domain.dto.request.MemberUpdateRequest;
+import com.example.ifclubserver.member.domain.dto.request.UpdateMemberRequest;
 import com.example.ifclubserver.member.domain.dto.response.CreateMemberResponse;
-import com.example.ifclubserver.member.domain.entity.Member;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class MemberController {
+@RequestMapping("/api/members")
+public class MemberController implements MemberControllerDocs {
 
     final private MemberServiceImpl memberServiceImpl;
 
-
-    @PostMapping("/members")
-    public ResponseEntity<CreateMemberResponse> create(CreateMemberRequest form) {
-
+    @PostMapping("/")
+    public ResponseEntity<CreateMemberResponse> create(@RequestBody CreateMemberRequest form) {
         // 멤버 저장 로직 호출
         CreateMemberResponse createMemberResponse = memberServiceImpl.createMember(form);
 
         return ResponseEntity.ok(createMemberResponse);
     }
 
-    @GetMapping("/members/{id}")
-    public ResponseEntity<MemberDto> getMember(
-            @PathVariable("id") Long id
-    ) {
-        MemberDto memberDto = memberServiceImpl.getMember(id);
+    @GetMapping("/")
+    public ResponseEntity<List<MemberDto>> getMembers() {
+        List<MemberDto> memberDtos = memberServiceImpl.getMembers();
+        return ResponseEntity.ok(memberDtos);
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<MemberDto> getMember(@PathVariable("id") Long id) {
+        MemberDto memberDto = memberServiceImpl.getMember(id);
         return ResponseEntity.ok(memberDto);
     }
 
-    @DeleteMapping("/members/{id}")
-    public ResponseEntity<Void> deleteMember(@PathVariable long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
         memberServiceImpl.deleteMember(id);
-
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/members/{id}")
-    public ResponseEntity<MemberDto> updateMember(@PathVariable long id, @RequestBody MemberUpdateRequest memberUpdate) {
-
-        return ResponseEntity.ok()
-                .body(memberServiceImpl.updateMember(id, memberUpdate));
+    @PutMapping("/{id}")
+    public ResponseEntity<MemberDto> updateMember(@PathVariable  Long id,
+        @RequestBody UpdateMemberRequest memberUpdate) {
+        return ResponseEntity.ok().body(memberServiceImpl.updateMember(id, memberUpdate));
     }
+
 }
